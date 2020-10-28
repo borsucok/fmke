@@ -1,0 +1,216 @@
+openapi: 3.0.1
+info:
+  version: 1.0.0
+  title: FMKE KOAS3
+paths:
+  /contacts:
+    x-controller-name: contacts_ctrl
+    get:
+      operationId: getAllContacts
+      tags: [Contacts]
+      description: Get all contacts
+      parameters:
+        - name: bdayFrom
+          in: query
+          required: false
+          description: Filter contacts with bday from date
+          schema:
+            type: string
+            format: date-time
+        - name: bdayTo
+          in: query
+          required: false
+          description: Filter contacts with bday to date
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: All contacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contacts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Contact'
+        default:
+          description: Error responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createNewContact
+      tags: [Contacts]
+      description: Create new contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreate'
+      responses:
+        201:
+          description: Contact created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        default:
+          description: Error responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /contacts/{id}:
+    x-controller-name: contacts_ctrl
+    parameters:
+      - name: id
+        in: path
+        description: Contact ID
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getContact
+      tags: [Contacts]
+      description: Get one contacts
+      responses:
+        200:
+          description: One contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        404:
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: updateContact
+      tags: [Contacts]
+      description: Update contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreate'
+      responses:
+        200:
+          description: Contact updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        404:
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteContact
+      tags: [Contacts]
+      description: Delete contact
+      responses:
+        200:
+          description: Contact deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+        404:
+          description: Contact not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Error responses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+servers:
+  - url: https://fmke.sportnet.online/api/v1
+components:
+  schemas:
+    ContactCreate:
+      type: object
+      required:
+        - firstname
+        - lastname
+        - birthdate
+      additionalProperties: false
+      properties:
+        firstname:
+          type: string
+          minLength: 1
+        lastname:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+        birthdate:
+          type: string
+          format: date-time
+    Contact:
+      type: object
+      properties:
+        _id:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+          format: email
+        birthdate:
+          type: string
+          format: date-time
+    Error:
+      required:
+        - statusCode
+        - name
+        - description
+      properties:
+        statusCode:
+          type: integer
+        name:
+          type: string
+        description:
+          nullable: true
+          type: string
+        payload:
+          additionalProperties: true
+          nullable: true
+          type: object
+        userinfo:
+          type: string
+          description: Localized info
+      additionalProperties: true

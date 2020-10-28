@@ -1,0 +1,40 @@
+# IDE files
+.idea
+.vscode
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+/build
+/dist
+/coverage
+/data
+
+# Dependency directory
+# Commenting this out is preferred by some people, see
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+/node_modules
+
+# Users Environment Variables
+.lock-wscript
+
+# Runtime configuration for swagger app
+/config/runtime.yaml
+
+# OS-X sprostosti
+.DS_Store
+._*
+*~
+
+.yarn
+.env*
+!.env.sample
+
+node_modules

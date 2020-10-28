@@ -1,0 +1,31 @@
+{
+  "name": "fmke",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon -e js,yaml --ignore dist --ignore '*.test.*' --delay 0.5",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "rsync -avP --exclude=./.git* --delete-excluded ./ sportnet.bart.sk:fmke/ && ssh sportnet.bart.sk sh ./fmke/service.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/borsucok/fmke-koas3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "@koa/router": "^9.4.0",
+    "js-yaml": "^3.14.0",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-send": "^5.0.1",
+    "koas3": "0.0.7",
+    "mongodb": "^3.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
